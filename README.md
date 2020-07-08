@@ -1,43 +1,38 @@
 # IotWebConf [![Build Status](https://travis-ci.org/prampec/IotWebConf.svg?branch=master)](https://travis-ci.org/prampec/IotWebConf)
 
-## Summary
-IotWebConf is an Arduino library for ESP8266/ESP32 to provide a non-blocking standalone WiFi/AP web configuration portal.
-**For ESP8266, IotWebConf requires the esp8266 board package version 2.4.2 or later!**
+## Resumen
+IotWebConf es una biblioteca Arduino para ESP8266 / ESP32 para proporcionar un portal de configuración web WiFi / AP autónomo sin bloqueo.
+**¡Para ESP8266, IotWebConf requiere el paquete de placa esp8266 versión 2.4.2 o posterior!**
 
-Please subscribe to the [discussion forum](https://groups.google.com/forum/#!forum/iotwebconf), if you want to be informed on the latest news.
+## Destacar
 
-**HELP WANTED!** If you are testing any GIT branches, please give me feedback to provide stable releases for the public.
-
-## Highlights
-
-  - Manages WiFi connection settings,
-  - Provides a config portal user interface,
-  - You can extend the configuration with your own property items, that are stored automatically,
-  - HTML customization,
-  - Validation support for the configuration property items,
-  - User code will be notified of status changes with callback methods,
-  - Configuration (including your custom items) stored in the EEPROM,
-  - Firmware OTA update support,
-  - Config portal remains available even after WiFi is connected,
-  - Automatic "Sign in to network" pop up in your browser (captive portal),
-  - Non-blocking - Your custom code will not be blocked in the whole process.
-  - Well documented header file, and examples from simple to complex levels.
+  - Administra la configuración de la conexión WiFi.
+  - Proporciona una interfaz de usuario del portal de configuración.
+  - Puede ampliar la configuración con sus propios elementos de propiedad, que se almacenan automáticamente
+  - Personalización de HTML
+  - Soporte de validación para los elementos de propiedad de configuración.
+  - El código de usuario será notificado de los cambios de estado con métodos de devolución de llamada.
+  - Configuración (incluidos sus elementos personalizados) almacenados en la EEPROM.
+  - Soporte de actualización de firmware OTA.
+  - El portal de configuración permanece disponible incluso después de conectar WiFi
+  - Ventana emergente automática "Iniciar sesión en la red" en su navegador (portal cautivo),
+  - Sin bloqueo: su código personalizado no se bloqueará en todo el proceso.
+  - Archivo de encabezado bien documentado y ejemplos de niveles simples a complejos.
 
 ![Screenshot](https://sharedinventions.com/wp-content/uploads/2018/11/Screenshot_20181105-191748a.png)
 ![Screenshot](https://sharedinventions.com/wp-content/uploads/2019/02/Screenshot-from-2019-02-03-22-16-51b.png)
   
-## How it works
-The idea is that the Thing will provide a web interface to allow modifying its configuration. E.g. for connecting to a local WiFi network, it needs the SSID and the password.
+## Cómo funciona
+La idea es que Thing proporcionará una interfaz web para permitir modificar su configuración. Por ejemplo, para conectarse a una red WiFi local, necesita el SSID y la contraseña.
 
-When no WiFi is configured, or the configured network is unavailable it creates its own AP (access point), and lets clients connect to it directly to make the configuration.
+Cuando no hay WiFi configurado o la red configurada no está disponible, crea su propio AP (punto de acceso) y permite que los clientes se conecten directamente a él para realizar la configuración.
 
-Furthermore there is a button (or let's say a Pin), that when pressed on startup will cause a default password to be used instead of the configured (forgotten) one.
-You can find the default password in the sources. :)
+Además, hay un botón (o digamos un Pin), que cuando se presiona al inicio hará que se use una contraseña predeterminada en lugar de la configurada (olvidada). Puede encontrar la contraseña predeterminada en las fuentes. :)
 
-IotWebConf saves configuration in the "EEPROM". You can extend the config portal with your custom configuration items. Those items will be also maintained by IotWebConf.
+IotWebConf guarda la configuración en la "EEPROM". Puede ampliar el portal de configuración con sus elementos de configuración personalizados. Esos artículos también serán mantenidos por IotWebConf.
 
-## Use cases
-  1. **You turn on your IoT the first time** - It turns into AP (access point) mode, and waits for you on the 192.168.4.1 address with a web interface to set up your local network (and other configurations). For the first time a default password is used when you connect to the AP. When you connect to the AP, your device will likely automatically pop up the portal page. (We call this a Captive Portal.) When configuration is done, you must leave the AP. The device detects that no one is connected, and continues with normal operation.
+## Casos de uso
+  1. **Enciende su IoT la primera vez: ** - It turns into AP (access point) mode, and waits for you on the 192.168.4.1 address with a web interface to set up your local network (and other configurations). For the first time a default password is used when you connect to the AP. When you connect to the AP, your device will likely automatically pop up the portal page. (We call this a Captive Portal.) When configuration is done, you must leave the AP. The device detects that no one is connected, and continues with normal operation.
   1. **WiFi configuration is changed, e.g. the Thing is moved to another location** - When the Thing cannot connect to the configured WiFi, it falls back to AP mode, and waits for you to change the network configuration. When no configuration was made, then it keeps trying to connect with the already configured settings. The Thing will not switch off the AP while anyone is connected to it, so you must leave the AP when finished with the configuration.
   1. **You want to connect to the AP, but have forgotten the configured AP WiFi password you set up previously** - Connect the appropriate pin on the Arduino to ground with a push button. Holding the button pressed while powering up the device causes the Thing to start the AP mode with the default password. (See Case 1. The pin is configured in the code.)
   1. **You want to change the configuration before the Thing connects to the Internet** - Fine! The Thing always starts up in AP mode and provides you a time frame to connect to it and make any modification to the configuration. Any time one is connected to the AP (provided by the device) the AP will stay on until the connection is closed. So take your time for the changes, the Thing will wait for you while you are connected to it.
